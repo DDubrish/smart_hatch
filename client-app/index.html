@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <title>Smart Hatch</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <h2>Ввод данных о новом люке:</h2>
+    <form name="hatchForm">
+      <div>
+        <label>Номер люка:</label>
+        <input class="form-control" type="number" name="id" />
+      </div>
+      <div>
+        <label>Наименование организации:</label>
+        <input class="form-control" type="text" name="name" />
+      </div>
+      <div>
+        <label>Координата х:</label>
+        <input type="text" name="coordX" />
+      </div>
+      <div>
+        <label>Координата y:</label>
+        <input type="text" name="coordY" />
+      </div>
+      <div>
+        <label>Состояние датчика:</label>
+        <input type="text" name="state" />
+      </div>
+      <div>
+        <label>Дата последнего ТО:</label>
+        <input type="date" name="dateTo" />
+      </div>
+      <div>
+        <label>Дата последнего срабатывания датчика:</label>
+        <input type="date" name="dateLastWork" />
+      </div>
+      <div class="buttons">
+        <button type="submit">Отправить</button>
+      </div>
+    </form>
+  </body>
+
+  <script>
+    // Добавление пользователя
+    async function createOrg(orgId, orgName) {
+      const response = await fetch("http://127.0.0.1:5501/org", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          id: orgId,
+          name: orgName,
+        }),
+      });
+    }
+
+    // отправка формы
+    document.forms["hatchForm"].addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = document.forms["hatchForm"];
+      const id = form.elements["id"].value;
+      const name = form.elements["name"].value;
+
+      createOrg(id, name);
+    });
+  </script>
+</html>
