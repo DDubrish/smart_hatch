@@ -10,32 +10,33 @@
     <h2>Ввод данных о новом люке:</h2>
     <form name="hatchForm">
       <div>
-        <label>Номер люка:</label>
-        <input class="form-control" type="number" name="id" />
+        <label for="number">Номер люка:</label>
+        <input type="number" id="number" name="id" />
+        <!--можно дописать required, чтобы форма не отправлялась если этих данных нет -->
       </div>
       <div>
-        <label>Наименование организации:</label>
-        <input class="form-control" type="text" name="name" />
+        <label for="nameOrg">Наименование организации:</label>
+        <input type="text" id="nameOrg" name="name" />
       </div>
       <div>
-        <label>Координата х:</label>
-        <input type="text" name="coordX" />
+        <label for="coordX">Координата х:</label>
+        <input type="text" id="coordX" name="coordX" />
       </div>
       <div>
-        <label>Координата y:</label>
-        <input type="text" name="coordY" />
+        <label for="coordY">Координата y:</label>
+        <input type="text" id="coordY" name="coordY" />
       </div>
       <div>
-        <label>Состояние датчика:</label>
-        <input type="text" name="state" />
+        <label for="state">Состояние датчика:</label>
+        <input type="number" id="state" name="state" />
       </div>
       <div>
-        <label>Дата последнего ТО:</label>
-        <input type="date" name="dateTo" />
+        <label for="dateTo">Дата последнего ТО:</label>
+        <input type="date" id="dateTo" name="dateTo" />
       </div>
       <div>
-        <label>Дата последнего срабатывания датчика:</label>
-        <input type="date" name="dateLastWork" />
+        <label for="dateLastWork">Дата последнего срабатывания датчика:</label>
+        <input type="date" id="dateLastWork" name="dateLastWork" />
       </div>
       <div class="buttons">
         <button type="submit">Отправить</button>
@@ -45,28 +46,54 @@
 
   <script>
     // Добавление пользователя
-    async function createOrg(orgId, orgName) {
+    //Создаем асинхронную функцию
+    async function createOrg(hatch) {
+      //orgId, orgName, coord
+      //асинхронная операция, приостанавливает выполнение функции,пока не вернется результат. fetch(параметры ресурса, куда функция обращается, доп.настройки запроса) -
+      //возвращает объект Promise,который получает ответ после завершения запроса к сетевому ресурсу
       const response = await fetch("http://127.0.0.1:5501/org", {
+        //метод запроса
         method: "POST",
+        //набор заголовков ответа
         headers: {
+          //клиент принимает данные в формате json
           Accept: "application/json",
           "Content-Type": "application/x-www-form-urlencoded",
         },
+        //содержимое ответа, данные которые добавляются в запрос
         body: new URLSearchParams({
-          id: orgId,
-          name: orgName,
+          id: hatch.id,
+          name: hatch.name,
+          coordX: hatch.coordX,
+          coordY: hatch.coordY,
+          state: hatch.state,
+          dateTo: hatch.dateTo,
+          dateLastWork: hatch.dateLastWork,
         }),
       });
     }
 
     // отправка формы
-    document.forms["hatchForm"].addEventListener("submit", (e) => {
-      e.preventDefault();
+    // Свойство навигации по формам
+    document.forms["hatchForm"].addEventListener("submit", (event) => {
+      //отмена стандарного действия браузера
+      event.preventDefault();
+      //Элементы формы
+      let hatch = {};
       const form = document.forms["hatchForm"];
-      const id = form.elements["id"].value;
-      const name = form.elements["name"].value;
+      hatch.id = form.elements["id"].value;
+      hatch.name = form.elements["name"].value;
+      hatch.coordX = form.elements["coordX"].value;
+      hatch.coordY = form.elements["coordY"].value;
+      hatch.state = form.elements["state"].value;
+      hatch.dateTo = form.elements["dateTo"].value;
+      hatch.dateLastWork = form.elements["dateLastWork"].value;
+      // const id = form.elements["id"].value;
+      // const name = form.elements["name"].value;
+      // const date = form.elements["coordX"].value;
 
-      createOrg(id, name);
+      // createOrg(id, name, coordX);
+      createOrg(hatch);
     });
   </script>
 </html>

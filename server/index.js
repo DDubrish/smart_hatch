@@ -60,11 +60,36 @@ app.post("/org", urlencodedParser, (request, response) => {
   console.log(request.body);
   const orgId = request.body.id;
   const orgName = request.body.name;
+  const coordX = request.body.coordX;
+  const coordY = request.body.coordY;
+  const state = request.body.state;
+  const dateTo = request.body.dateTo;
+  const dateLastWork = request.body.dateLastWork;
+  console.log("qqqqqqq = " + typeof state);
 
   const sql =
     `INSERT INTO org (id, name) VALUES (` + orgId + `,'` + orgName + `');`;
   console.log(sql);
   db.run(sql);
+
+  const sql2 =
+    `INSERT INTO luk(id,org, koord_x, koord_y, date_to, condition, date_last_work) VALUES(` +
+    orgId +
+    `,'` +
+    orgName +
+    `','` +
+    coordX +
+    `','` +
+    coordY +
+    `','` +
+    dateTo +
+    `',` +
+    state +
+    `,'` +
+    dateLastWork +
+    `');`;
+  console.log(sql2);
+  db.run(sql2);
 
   getOrgs();
 
