@@ -16,7 +16,13 @@
       </div>
       <div>
         <label for="nameOrg">Наименование организации:</label>
-        <input type="text" id="nameOrg" name="name" />
+        <!-- <input type="text" id="nameOrg" name="name" />
+      </div>
+      <div class="dropdown">
+        <label for="organization"></label> -->
+        <select id="organization" name="organization">
+          <option disabled selected>Выберите организацию:</option>
+        </select>
       </div>
       <div>
         <label for="coordX">Координата х:</label>
@@ -48,7 +54,6 @@
     // Добавление пользователя
     //Создаем асинхронную функцию
     async function createOrg(hatch) {
-      //orgId, orgName, coord
       //асинхронная операция, приостанавливает выполнение функции,пока не вернется результат. fetch(параметры ресурса, куда функция обращается, доп.настройки запроса) -
       //возвращает объект Promise,который получает ответ после завершения запроса к сетевому ресурсу
       const response = await fetch("http://127.0.0.1:5501/org", {
@@ -63,7 +68,7 @@
         //содержимое ответа, данные которые добавляются в запрос
         body: new URLSearchParams({
           id: hatch.id,
-          name: hatch.name,
+          orgId: hatch.orgId,
           coordX: hatch.coordX,
           coordY: hatch.coordY,
           state: hatch.state,
@@ -71,6 +76,24 @@
           dateLastWork: hatch.dateLastWork,
         }),
       });
+    }
+
+    async function getOrg() {
+      const response = await fetch("http://127.0.0.1:5501/org", {
+        method: "GET",
+        headers: { Accept: "application/json" },
+      });
+      if (response.ok === true) {
+        const orgs = await response.json();
+        let orgSelect = document.querySelector("[id='organization']");
+        orgs.forEach((org) => {
+          let option = document.createElement("option");
+          option.value = org.id;
+          option.textContent = org.name;
+
+          orgSelect.appendChild(option);
+        });
+      }
     }
 
     // отправка формы
@@ -82,12 +105,16 @@
       let hatch = {};
       const form = document.forms["hatchForm"];
       hatch.id = form.elements["id"].value;
-      hatch.name = form.elements["name"].value;
+      //  hatch.name = form.elements["name"].value;
+      var sel = document.getElementById("organization");
+      hatch.orgId = sel.options[sel.selectedIndex].value;
+
       hatch.coordX = form.elements["coordX"].value;
       hatch.coordY = form.elements["coordY"].value;
       hatch.state = form.elements["state"].value;
       hatch.dateTo = form.elements["dateTo"].value;
       hatch.dateLastWork = form.elements["dateLastWork"].value;
+      console.log("88888888888888888888");
       // const id = form.elements["id"].value;
       // const name = form.elements["name"].value;
       // const date = form.elements["coordX"].value;
@@ -95,5 +122,7 @@
       // createOrg(id, name, coordX);
       createOrg(hatch);
     });
+
+    document.addEventListener("DOMContentLoaded", getOrg, false);
   </script>
 </html>

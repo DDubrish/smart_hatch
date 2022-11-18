@@ -15,7 +15,8 @@ div {
   margin-top: 1em;
 }
 
-input {
+input,
+select {
   width: 300px;
   box-sizing: border-box;
 }

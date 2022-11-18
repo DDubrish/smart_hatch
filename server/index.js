@@ -54,54 +54,66 @@ getOrgs();
 //создание парсера для данных
 const urlencodedParser = express.urlencoded({ extended: false });
 
+//Эта функция срабатывает когда запущен сервер. В браузере надо открыть 127.0.0.1:5501
+//Устанавливаем обработчик для маршрута "/". Это главная страница или корневой маршрут. Get функция, кот.обрабатывает запрос по этому маршруту
+app.get("/org", (req, res) => {
+  const sql = "SELECT name FROM org";
+  console.log("Requesting Orgs");
+  db.run(sql);
+
+  db.all(sql, [], (err, rows) => {
+    let str = [];
+    if (err) {
+      throw err;
+    }
+    rows.forEach((row) => {
+      str.push({ id: row.id, name: row.name });
+    });
+
+    console.log(`Request finished`);
+    res.send(str);
+  });
+});
+
 //данные из формы отправляются с помощью метода post(адрес на который идет отправка, созданный парсер, обработчик)
 app.post("/org", urlencodedParser, (request, response) => {
   if (!request.body) return response.sendStatus(400);
   console.log(request.body);
   const orgId = request.body.id;
   const orgName = request.body.name;
+
+  const sql = `INSERT INTO org (id, name) VALUES (${orgId}, '${orgName}');`;
+  console.log(sql);
+  db.run(sql);
+
+  getOrgs();
+
+  response.send(`Added ${request.body.name} - ${request.body.id}`);
+});
+
+//данные из формы отправляются с помощью метода post(адрес на который идет отправка, созданный парсер, обработчик)
+app.post("/hatch", urlencodedParser, (request, response) => {
+  if (!request.body) return response.sendStatus(400);
+  console.log(request.body);
+  const hatchId = request.body.id;
+  const orgId = request.body.orgId;
   const coordX = request.body.coordX;
   const coordY = request.body.coordY;
   const state = request.body.state;
   const dateTo = request.body.dateTo;
   const dateLastWork = request.body.dateLastWork;
-  console.log("qqqqqqq = " + typeof state);
 
-  const sql =
-    `INSERT INTO org (id, name) VALUES (` + orgId + `,'` + orgName + `');`;
+  const sql = `INSERT INTO luk(id, org, koord_x, koord_y, date_to, condition, date_last_work) 
+    VALUES(${hatchId}, '${orgId}', '${coordX}', '${coordY}','${dateTo}','${state}', '${dateLastWork}');`;
   console.log(sql);
   db.run(sql);
 
-  const sql2 =
-    `INSERT INTO luk(id,org, koord_x, koord_y, date_to, condition, date_last_work) VALUES(` +
-    orgId +
-    `,'` +
-    orgName +
-    `','` +
-    coordX +
-    `','` +
-    coordY +
-    `','` +
-    dateTo +
-    `',` +
-    state +
-    `,'` +
-    dateLastWork +
-    `');`;
-  console.log(sql2);
-  db.run(sql2);
-
-  getOrgs();
-
-  response.send(`Added ${request.body.name} - ${request.body.id}`);
-  //response.send(`${request.body.name} - ${request.body.id}`);
+  // response.send(`Added ${request.body.name} - ${request.body.id}`);
 });
 
-//Эта функция срабатывает когда запущен сервер. В браузере надо открыть 127.0.0.1:5501
-//Устанавливаем обработчик для маршрута "/". Это главная страница или корневой маршрут. Get функция, кот.обрабатывает запрос по этому маршруту
-app.get("/", (req, res) => {
-  res.send("Hello! I am Hatch Keeper");
-});
+// app.get("/", (req, res) => {
+//   res.send("Hello! I am Hatch Keeper");
+// });
 
 app.listen(5501, () => {
   console.log("server started");
