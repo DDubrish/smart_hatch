@@ -16,21 +16,23 @@
       </div>
       <div>
         <label for="nameOrg">Наименование организации:</label>
-        <!-- <input type="text" id="nameOrg" name="name" />
-      </div>
-      <div class="dropdown">
-        <label for="organization"></label> -->
         <select id="organization" name="organization">
           <option disabled selected>Выберите организацию:</option>
         </select>
       </div>
       <div>
-        <label for="coordX">Координата х:</label>
-        <input type="text" id="coordX" name="coordX" />
-      </div>
-      <div>
-        <label for="coordY">Координата y:</label>
-        <input type="text" id="coordY" name="coordY" />
+        <div class="div1"><label for="coords">Координаты:</label></div>
+        <div class="div1">
+          <!-- <label class="lbl" for="coordX">X:</label> -->
+          <input type="text" id="coordX" name="coordX" placeholder="X" />
+        </div>
+        <div class="div1">
+          <!-- <label class="lbl" for="coordY">Y:</label> -->
+          <input type="text" id="coordY" name="coordY" placeholder="Y" />
+        </div>
+        <div class="div1">
+          <button class="map" , type="button">Карта</button>
+        </div>
       </div>
       <div>
         <label for="state">Состояние датчика:</label>
@@ -45,7 +47,7 @@
         <input type="date" id="dateLastWork" name="dateLastWork" />
       </div>
       <div class="buttons">
-        <button type="submit">Отправить</button>
+        <button id="btn-submit" type="submit">Отправить</button>
       </div>
     </form>
   </body>
@@ -105,7 +107,7 @@
       let hatch = {};
       const form = document.forms["hatchForm"];
       hatch.id = form.elements["id"].value;
-      //  hatch.name = form.elements["name"].value;
+
       var sel = document.getElementById("organization");
       hatch.orgId = sel.options[sel.selectedIndex].value;
 
@@ -114,12 +116,7 @@
       hatch.state = form.elements["state"].value;
       hatch.dateTo = form.elements["dateTo"].value;
       hatch.dateLastWork = form.elements["dateLastWork"].value;
-      console.log("88888888888888888888");
-      // const id = form.elements["id"].value;
-      // const name = form.elements["name"].value;
-      // const date = form.elements["coordX"].value;
 
-      // createOrg(id, name, coordX);
       createOrg(hatch);
     });
 

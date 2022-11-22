@@ -17,10 +17,23 @@ div {
 
 input,
 select {
-  width: 300px;
+  width: 320px;
   box-sizing: border-box;
 }
+.div1 {
+  display: inline-block;
+  margin-top: 0;
+}
 
-button {
+#coordX,
+#coordY {
+  width: 120px;
+}
+
+.map {
+  width: 70px;
+}
+
+#btn-submit {
   margin-left: 355px;
 }
