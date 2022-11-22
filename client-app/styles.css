@@ -1,33 +1,33 @@
 form {
-  width: 700px;
+  width: 710px;
   padding: 1em;
   border: 1px solid #ccc;
   border-radius: 1em;
 }
 
-label {
+.lbl {
   display: inline-block;
   width: 350px;
   text-align: right;
 }
 
-div {
+.dataHatch {
   margin-top: 1em;
 }
 
-input,
-select {
-  width: 320px;
+.input {
+  width: 354px;
   box-sizing: border-box;
 }
-.div1 {
+
+.coord {
   display: inline-block;
   margin-top: 0;
 }
 
 #coordX,
 #coordY {
-  width: 120px;
+  width: 125px;
 }
 
 .map {

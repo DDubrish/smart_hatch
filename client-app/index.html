@@ -4,52 +4,151 @@
     <meta charset="utf-8" />
     <title>Smart Hatch</title>
     <link rel="stylesheet" href="styles.css" />
+    <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+    <script type="text/javascript">
+      var fromProjection = new OpenLayers.Projection("EPSG:4326");
+      var toProjection = new OpenLayers.Projection("EPSG:900913");
+
+      function getMap() {
+        map = new OpenLayers.Map("OSMap"); //инициализация карты
+        var mapnik = new OpenLayers.Layer.OSM(); //создание слоя карты
+        map.addLayer(mapnik); //добавление слоя (без него не отображается карта вообще)
+        // map.zoomToMaxExtent(); //выставляем zoom и центр карты, т.ч.поместился весь мир
+        //чтобы карта открылась отзуммированой на ВРН, вместо предыдущей строки нужно добавить следующую
+        map.moveTo(new OpenLayers.LonLat(39.1649, 51.6943), 9);
+        //широта/долгота, задаем от руки координаты маркера
+        var lonlat = new OpenLayers.LonLat(39.1649, 51.6943);
+        map.setCenter(
+          lonlat.transform(
+            //переобразование в WGS 1984 -геодезическая система координат на эллипсоиде WGS 84(широта/долгота) рассматривает Землю как эллипсоид
+            new OpenLayers.Projection("EPSG:4326"),
+            new OpenLayers.Projection("EPSG:900913") //переобразование проекции - WGS84 web mercator, рассматривает Землю как сферу. Также EPSG:3857
+          )
+          //   16 //масштаб
+        );
+
+        //создание слоя меток
+        var layerMarkers = new OpenLayers.Layer.Markers("Equipments");
+        //добавление этого слоя к карте
+        map.addLayer(layerMarkers);
+
+        //данные маркера
+        var size = new OpenLayers.Size(25, 25); //размер иконки маркера
+        var offset = new OpenLayers.Pixel(-(size.w / 2), -size.h); //смещение картинки для маркера
+        var icon = new OpenLayers.Icon("img/hatch.png", size, offset); //картинка для маркера
+        layerMarkers.addMarker(new OpenLayers.Marker(lonlat, icon)); //добавляем маркер к слою маркеров(координаты, иконка)
+        //переключатель видимости слоев, если false, то сначала идет мой слой, потом базовый
+        map.addControl(
+          new OpenLayers.Control.LayerSwitcher({ ascending: true })
+        );
+
+        //координаты текущего положения мыши
+        //преобразование из метров в градусы с помощью proj4js(библиотека JS, преобразует координаты из одной системы координат в другую)
+        map.addControl(
+          new OpenLayers.Control.MousePosition({
+            // displayProjection: new OpenLayers.Projection("EPSG:4326"),
+            displayProjection: new OpenLayers.Projection("EPSG:900913"),
+          })
+        );
+
+        var click = new OpenLayers.Control.Click();
+        map.addControl(click);
+        click.activate();
+
+        document.getElementById("OSMap").hidden = true;
+      }
+
+      OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
+        defaultHandlerOptions: {
+          single: true,
+          double: false,
+          pixelTolerance: 0,
+          stopSingle: false,
+          stopDouble: false,
+        },
+
+        initialize: function (options) {
+          this.handlerOptions = OpenLayers.Util.extend(
+            {},
+            this.defaultHandlerOptions
+          );
+          OpenLayers.Control.prototype.initialize.apply(this, arguments);
+          this.handler = new OpenLayers.Handler.Click(
+            this,
+            { click: this.trigger },
+            this.handlerOptions
+          );
+        },
+        trigger: function (e) {
+          var lonlat = map.getLonLatFromPixel(e.xy);
+          lonlat1 = new OpenLayers.LonLat(lonlat.lon, lonlat.lat).transform(
+            toProjection,
+            fromProjection
+          );
+
+          // alert("Hello..." + lonlat.lon + " " + lonlat.lat);
+
+          document.getElementById("coordX").value = lonlat.lat;
+          document.getElementById("coordY").value = lonlat.lon;
+        },
+      });
+    </script>
   </head>
 
   <body>
     <h2>Ввод данных о новом люке:</h2>
     <form name="hatchForm">
-      <div>
-        <label for="number">Номер люка:</label>
-        <input type="number" id="number" name="id" />
+      <div class="dataHatch">
+        <label class="lbl" for="number">Номер люка:</label>
+        <input class="input" type="number" id="number" name="id" />
         <!--можно дописать required, чтобы форма не отправлялась если этих данных нет -->
       </div>
-      <div>
-        <label for="nameOrg">Наименование организации:</label>
-        <select id="organization" name="organization">
+      <div class="dataHatch">
+        <label class="lbl" for="nameOrg">Наименование организации:</label>
+        <select class="input" id="organization" name="organization">
           <option disabled selected>Выберите организацию:</option>
         </select>
       </div>
-      <div>
-        <div class="div1"><label for="coords">Координаты:</label></div>
-        <div class="div1">
+      <div class="dataHatch">
+        <div class="coord">
+          <label class="lbl" for="coords">Координаты:</label>
+        </div>
+        <div class="coord">
           <!-- <label class="lbl" for="coordX">X:</label> -->
           <input type="text" id="coordX" name="coordX" placeholder="X" />
         </div>
-        <div class="div1">
+        <div class="coord">
           <!-- <label class="lbl" for="coordY">Y:</label> -->
           <input type="text" id="coordY" name="coordY" placeholder="Y" />
         </div>
-        <div class="div1">
-          <button class="map" , type="button">Карта</button>
+        <div class="coord">
+          <button class="map" type="button" id="mapBtn">Карта</button>
         </div>
       </div>
-      <div>
-        <label for="state">Состояние датчика:</label>
-        <input type="number" id="state" name="state" />
+      <div class="dataHatch">
+        <label class="lbl" for="state">Состояние датчика:</label>
+        <input class="input" type="number" id="state" name="state" />
       </div>
-      <div>
-        <label for="dateTo">Дата последнего ТО:</label>
-        <input type="date" id="dateTo" name="dateTo" />
+      <div class="dataHatch">
+        <label class="lbl" for="dateTo">Дата последнего ТО:</label>
+        <input class="input" type="date" id="dateTo" name="dateTo" />
       </div>
-      <div>
-        <label for="dateLastWork">Дата последнего срабатывания датчика:</label>
-        <input type="date" id="dateLastWork" name="dateLastWork" />
+      <div class="dataHatch">
+        <label class="lbl" for="dateLastWork"
+          >Дата последнего срабатывания датчика:</label
+        >
+        <input
+          class="input"
+          type="date"
+          id="dateLastWork"
+          name="dateLastWork"
+        />
       </div>
-      <div class="buttons">
+      <div class="buttons dataHatch">
         <button id="btn-submit" type="submit">Отправить</button>
       </div>
     </form>
+    <section id="OSMap" style="height: 650px"></section>
   </body>
 
   <script>
@@ -121,5 +220,18 @@
     });
 
     document.addEventListener("DOMContentLoaded", getOrg, false);
+
+    document.addEventListener("DOMContentLoaded", getMap, false);
+
+    document.getElementById("mapBtn").addEventListener(
+      "click",
+      () => {
+        let mapDiv = document.getElementById("OSMap");
+        if (mapDiv) {
+          mapDiv.hidden = !mapDiv.hidden;
+        }
+      },
+      false
+    );
   </script>
 </html>
