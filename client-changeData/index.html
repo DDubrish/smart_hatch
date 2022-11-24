@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="./src/styles.css" />
+    <script src="./src/table-view.js"></script>
+    <title>Monitoring Hatch</title>
+  </head>
+  <body>
+    <h2>Мониторинг состояния люков:</h2>
+    <form name="monitoringForm">
+      <div class="org">
+        <label for="nameOrg">Наименование организации:</label>
+        <select id="organization" name="organization">
+          <option disabled selected>Выберите организацию:</option>
+        </select>
+      </div>
+      <table id="tableStateHatch">
+        <tr>
+          <th>Номер люка:</th>
+          <th>Состояние:</th>
+        </tr>
+      </table>
+    </form>
+  </body>
+</html>

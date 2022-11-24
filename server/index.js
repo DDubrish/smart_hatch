@@ -108,7 +108,26 @@ app.post("/hatch", urlencodedParser, (request, response) => {
   console.log(sql);
   db.run(sql);
 
-  // response.send(`Added ${request.body.name} - ${request.body.id}`);
+  response.send(`Added ${request.body.name} - ${request.body.id}`);
+});
+
+app.get("/hatches", (req, res) => {
+  const sql = "SELECT id, condition FROM luk";
+  console.log("Requesting state hatch");
+  db.run(sql);
+
+  db.all(sql, [], (err, rows) => {
+    let str = [];
+    if (err) {
+      throw err;
+    }
+    rows.forEach((row) => {
+      str.push({ id: row.id, state: row.condition });
+    });
+
+    console.log(`Request finished`);
+    res.send(str);
+  });
 });
 
 // app.get("/", (req, res) => {
