@@ -6,16 +6,15 @@
     <link rel="stylesheet" href="styles.css" />
     <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
     <script type="text/javascript">
-      var fromProjection = new OpenLayers.Projection("EPSG:4326");
-      var toProjection = new OpenLayers.Projection("EPSG:900913");
-
+      // var fromProjection = new OpenLayers.Projection("EPSG:4326");
+      // var toProjection = new OpenLayers.Projection("EPSG:900913");
+      var layerMarkers;
       function getMap() {
         map = new OpenLayers.Map("OSMap"); //инициализация карты
         var mapnik = new OpenLayers.Layer.OSM(); //создание слоя карты
         map.addLayer(mapnik); //добавление слоя (без него не отображается карта вообще)
-        // map.zoomToMaxExtent(); //выставляем zoom и центр карты, т.ч.поместился весь мир
-        //чтобы карта открылась отзуммированой на ВРН, вместо предыдущей строки нужно добавить следующую
-        map.moveTo(new OpenLayers.LonLat(39.1649, 51.6943), 9);
+        map.zoomToMaxExtent(); //выставляем zoom и центр карты, т.ч.поместился весь мир
+
         //широта/долгота, задаем от руки координаты маркера
         var lonlat = new OpenLayers.LonLat(39.1649, 51.6943);
         map.setCenter(
@@ -23,20 +22,20 @@
             //переобразование в WGS 1984 -геодезическая система координат на эллипсоиде WGS 84(широта/долгота) рассматривает Землю как эллипсоид
             new OpenLayers.Projection("EPSG:4326"),
             new OpenLayers.Projection("EPSG:900913") //переобразование проекции - WGS84 web mercator, рассматривает Землю как сферу. Также EPSG:3857
-          )
-          //   16 //масштаб
+          ),
+          16 //масштаб
         );
 
         //создание слоя меток
-        var layerMarkers = new OpenLayers.Layer.Markers("Equipments");
+        layerMarkers = new OpenLayers.Layer.Markers("Equipments");
         //добавление этого слоя к карте
         map.addLayer(layerMarkers);
 
-        //данные маркера
-        var size = new OpenLayers.Size(25, 25); //размер иконки маркера
-        var offset = new OpenLayers.Pixel(-(size.w / 2), -size.h); //смещение картинки для маркера
-        var icon = new OpenLayers.Icon("img/hatch.png", size, offset); //картинка для маркера
-        layerMarkers.addMarker(new OpenLayers.Marker(lonlat, icon)); //добавляем маркер к слою маркеров(координаты, иконка)
+        // //данные маркера
+        // var size = new OpenLayers.Size(25, 25); //размер иконки маркера
+        // var offset = new OpenLayers.Pixel(-(size.w / 2), -size.h); //смещение картинки для маркера
+        // var icon = new OpenLayers.Icon("img/hatch.png", size, offset); //картинка для маркера
+        // layerMarkers.addMarker(new OpenLayers.Marker(lonlat, icon)); //добавляем маркер к слою маркеров(координаты, иконка)
         //переключатель видимости слоев, если false, то сначала идет мой слой, потом базовый
         map.addControl(
           new OpenLayers.Control.LayerSwitcher({ ascending: true })
@@ -82,14 +81,21 @@
         trigger: function (e) {
           var lonlat = map.getLonLatFromPixel(e.xy);
           lonlat1 = new OpenLayers.LonLat(lonlat.lon, lonlat.lat).transform(
-            toProjection,
-            fromProjection
+            new OpenLayers.Projection("EPSG:900913"), //координаты
+            new OpenLayers.Projection("EPSG:4326") //градусы
           );
 
           // alert("Hello..." + lonlat.lon + " " + lonlat.lat);
 
           document.getElementById("coordX").value = lonlat.lat;
           document.getElementById("coordY").value = lonlat.lon;
+
+          //данные маркера
+          var size = new OpenLayers.Size(25, 25); //размер иконки маркера
+          var offset = new OpenLayers.Pixel(-(size.w / 2), -size.h); //смещение картинки для маркера
+          var icon = new OpenLayers.Icon("img/hatch.png", size, offset); //картинка для маркера
+          layerMarkers.clearMarkers();
+          layerMarkers.addMarker(new OpenLayers.Marker(lonlat, icon));
         },
       });
     </script>
