@@ -3,102 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <title>Smart Hatch</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="./src/styles.css" />
     <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
-    <script type="text/javascript">
-      // var fromProjection = new OpenLayers.Projection("EPSG:4326");
-      // var toProjection = new OpenLayers.Projection("EPSG:900913");
-      var layerMarkers;
-      function getMap() {
-        map = new OpenLayers.Map("OSMap"); //инициализация карты
-        var mapnik = new OpenLayers.Layer.OSM(); //создание слоя карты
-        map.addLayer(mapnik); //добавление слоя (без него не отображается карта вообще)
-        map.zoomToMaxExtent(); //выставляем zoom и центр карты, т.ч.поместился весь мир
-
-        //широта/долгота, задаем от руки координаты маркера
-        var lonlat = new OpenLayers.LonLat(39.1649, 51.6943);
-        map.setCenter(
-          lonlat.transform(
-            //переобразование в WGS 1984 -геодезическая система координат на эллипсоиде WGS 84(широта/долгота) рассматривает Землю как эллипсоид
-            new OpenLayers.Projection("EPSG:4326"),
-            new OpenLayers.Projection("EPSG:900913") //переобразование проекции - WGS84 web mercator, рассматривает Землю как сферу. Также EPSG:3857
-          ),
-          16 //масштаб
-        );
-
-        //создание слоя меток
-        layerMarkers = new OpenLayers.Layer.Markers("Equipments");
-        //добавление этого слоя к карте
-        map.addLayer(layerMarkers);
-
-        // //данные маркера
-        // var size = new OpenLayers.Size(25, 25); //размер иконки маркера
-        // var offset = new OpenLayers.Pixel(-(size.w / 2), -size.h); //смещение картинки для маркера
-        // var icon = new OpenLayers.Icon("img/hatch.png", size, offset); //картинка для маркера
-        // layerMarkers.addMarker(new OpenLayers.Marker(lonlat, icon)); //добавляем маркер к слою маркеров(координаты, иконка)
-        //переключатель видимости слоев, если false, то сначала идет мой слой, потом базовый
-        map.addControl(
-          new OpenLayers.Control.LayerSwitcher({ ascending: true })
-        );
-
-        //координаты текущего положения мыши
-        //преобразование из метров в градусы с помощью proj4js(библиотека JS, преобразует координаты из одной системы координат в другую)
-        map.addControl(
-          new OpenLayers.Control.MousePosition({
-            // displayProjection: new OpenLayers.Projection("EPSG:4326"),
-            displayProjection: new OpenLayers.Projection("EPSG:900913"),
-          })
-        );
-
-        var click = new OpenLayers.Control.Click();
-        map.addControl(click);
-        click.activate();
-
-        document.getElementById("OSMap").hidden = true;
-      }
-
-      OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
-        defaultHandlerOptions: {
-          single: true,
-          double: false,
-          pixelTolerance: 0,
-          stopSingle: false,
-          stopDouble: false,
-        },
-
-        initialize: function (options) {
-          this.handlerOptions = OpenLayers.Util.extend(
-            {},
-            this.defaultHandlerOptions
-          );
-          OpenLayers.Control.prototype.initialize.apply(this, arguments);
-          this.handler = new OpenLayers.Handler.Click(
-            this,
-            { click: this.trigger },
-            this.handlerOptions
-          );
-        },
-        trigger: function (e) {
-          var lonlat = map.getLonLatFromPixel(e.xy);
-          lonlat1 = new OpenLayers.LonLat(lonlat.lon, lonlat.lat).transform(
-            new OpenLayers.Projection("EPSG:900913"), //координаты
-            new OpenLayers.Projection("EPSG:4326") //градусы
-          );
-
-          // alert("Hello..." + lonlat.lon + " " + lonlat.lat);
-
-          document.getElementById("coordX").value = lonlat.lat;
-          document.getElementById("coordY").value = lonlat.lon;
-
-          //данные маркера
-          var size = new OpenLayers.Size(25, 25); //размер иконки маркера
-          var offset = new OpenLayers.Pixel(-(size.w / 2), -size.h); //смещение картинки для маркера
-          var icon = new OpenLayers.Icon("img/hatch.png", size, offset); //картинка для маркера
-          layerMarkers.clearMarkers();
-          layerMarkers.addMarker(new OpenLayers.Marker(lonlat, icon));
-        },
-      });
-    </script>
   </head>
 
   <body>
@@ -106,12 +12,12 @@
     <form name="hatchForm">
       <div class="dataHatch">
         <label class="lbl" for="number">Номер люка:</label>
-        <input class="input" type="number" id="number" name="id" />
+        <input class="input" type="number" id="number" name="id" required />
         <!--можно дописать required, чтобы форма не отправлялась если этих данных нет -->
       </div>
       <div class="dataHatch">
         <label class="lbl" for="nameOrg">Наименование организации:</label>
-        <select class="input" id="organization" name="organization">
+        <select class="input" id="organization" name="organization" required>
           <option disabled selected>Выберите организацию:</option>
         </select>
       </div>
@@ -120,12 +26,24 @@
           <label class="lbl" for="coords">Координаты:</label>
         </div>
         <div class="coord">
-          <!-- <label class="lbl" for="coordX">X:</label> -->
-          <input type="text" id="coordX" name="coordX" placeholder="X" />
+          <input
+            readonly
+            type="text"
+            id="coordX"
+            name="coordX"
+            placeholder="X"
+            required
+          />
         </div>
         <div class="coord">
-          <!-- <label class="lbl" for="coordY">Y:</label> -->
-          <input type="text" id="coordY" name="coordY" placeholder="Y" />
+          <input
+            readonly
+            type="text"
+            id="coordY"
+            name="coordY"
+            placeholder="Y"
+            required
+          />
         </div>
         <div class="coord">
           <button class="map" type="button" id="mapBtn">Карта</button>
@@ -133,7 +51,16 @@
       </div>
       <div class="dataHatch">
         <label class="lbl" for="state">Состояние датчика:</label>
-        <input class="input" type="number" id="state" name="state" />
+        <input
+          class="input"
+          type="number"
+          id="state"
+          name="state"
+          min="0"
+          max="1"
+          value="0"
+          required
+        />
       </div>
       <div class="dataHatch">
         <label class="lbl" for="dateTo">Дата последнего ТО:</label>
@@ -155,89 +82,7 @@
       </div>
     </form>
     <section id="OSMap" style="height: 650px"></section>
+    <script src="./src/initMap.js"></script>
+    <script src="./src/mainForm.js"></script>
   </body>
-
-  <script>
-    // Добавление пользователя
-    //Создаем асинхронную функцию
-    async function createOrg(hatch) {
-      //асинхронная операция, приостанавливает выполнение функции,пока не вернется результат. fetch(параметры ресурса, куда функция обращается, доп.настройки запроса) -
-      //возвращает объект Promise,который получает ответ после завершения запроса к сетевому ресурсу
-      const response = await fetch("http://127.0.0.1:5501/org", {
-        //метод запроса
-        method: "POST",
-        //набор заголовков ответа
-        headers: {
-          //клиент принимает данные в формате json
-          Accept: "application/json",
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        //содержимое ответа, данные которые добавляются в запрос
-        body: new URLSearchParams({
-          id: hatch.id,
-          orgId: hatch.orgId,
-          coordX: hatch.coordX,
-          coordY: hatch.coordY,
-          state: hatch.state,
-          dateTo: hatch.dateTo,
-          dateLastWork: hatch.dateLastWork,
-        }),
-      });
-    }
-
-    async function getOrg() {
-      const response = await fetch("http://127.0.0.1:5501/org", {
-        method: "GET",
-        headers: { Accept: "application/json" },
-      });
-      if (response.ok === true) {
-        const orgs = await response.json();
-        let orgSelect = document.querySelector("[id='organization']");
-        orgs.forEach((org) => {
-          let option = document.createElement("option");
-          option.value = org.id;
-          option.textContent = org.name;
-
-          orgSelect.appendChild(option);
-        });
-      }
-    }
-
-    // отправка формы
-    // Свойство навигации по формам
-    document.forms["hatchForm"].addEventListener("submit", (event) => {
-      //отмена стандарного действия браузера
-      event.preventDefault();
-      //Элементы формы
-      let hatch = {};
-      const form = document.forms["hatchForm"];
-      hatch.id = form.elements["id"].value;
-
-      var sel = document.getElementById("organization");
-      hatch.orgId = sel.options[sel.selectedIndex].value;
-
-      hatch.coordX = form.elements["coordX"].value;
-      hatch.coordY = form.elements["coordY"].value;
-      hatch.state = form.elements["state"].value;
-      hatch.dateTo = form.elements["dateTo"].value;
-      hatch.dateLastWork = form.elements["dateLastWork"].value;
-
-      createOrg(hatch);
-    });
-
-    document.addEventListener("DOMContentLoaded", getOrg, false);
-
-    document.addEventListener("DOMContentLoaded", getMap, false);
-
-    document.getElementById("mapBtn").addEventListener(
-      "click",
-      () => {
-        let mapDiv = document.getElementById("OSMap");
-        if (mapDiv) {
-          mapDiv.hidden = !mapDiv.hidden;
-        }
-      },
-      false
-    );
-  </script>
 </html>

@@ -63,3 +63,9 @@ async function initAsync() {
 document.addEventListener("DOMContentLoaded", initAsync, false);
 
 setInterval(updateHatchStateAsync, REFRESH_TIMEOUT_MS);
+
+document.getElementById("organization").addEventListener("change", function () {
+  var select = document.getElementById("organization");
+  var idOrg = select.options[select.selectedIndex].value;
+  console.log(idOrg);
+});

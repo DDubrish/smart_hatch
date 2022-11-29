@@ -57,12 +57,12 @@ const urlencodedParser = express.urlencoded({ extended: false });
 //Эта функция срабатывает когда запущен сервер. В браузере надо открыть 127.0.0.1:5501
 //Устанавливаем обработчик для маршрута "/". Это главная страница или корневой маршрут. Get функция, кот.обрабатывает запрос по этому маршруту
 app.get("/org", (req, res) => {
-  const sql = "SELECT name FROM org";
+  const sql = "SELECT id, name FROM org";
   console.log("Requesting Orgs");
   db.run(sql);
 
   db.all(sql, [], (err, rows) => {
-    let str = [];
+    const str = []; //создание пустого массива в js
     if (err) {
       throw err;
     }
@@ -112,6 +112,25 @@ app.post("/hatch", urlencodedParser, (request, response) => {
 });
 
 app.get("/hatches", (req, res) => {
+  const sql = "SELECT id, condition FROM luk";
+  console.log("Requesting state hatch");
+  db.run(sql);
+
+  db.all(sql, [], (err, rows) => {
+    let str = [];
+    if (err) {
+      throw err;
+    }
+    rows.forEach((row) => {
+      str.push({ id: row.id, state: row.condition });
+    });
+
+    console.log(`Request finished`);
+    res.send(str);
+  });
+});
+
+app.get("/hatchesCurrentOrg", (req, res) => {
   const sql = "SELECT id, condition FROM luk";
   console.log("Requesting state hatch");
   db.run(sql);
