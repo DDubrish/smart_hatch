@@ -88,7 +88,7 @@ app.post("/org", urlencodedParser, (request, response) => {
 
   getOrgs();
 
-  response.send(`Added ${request.body.name} - ${request.body.id}`);
+  response.send(`Added org ${request.body.name} - ${request.body.id}`);
 });
 
 //данные из формы отправляются с помощью метода post(адрес на который идет отправка, созданный парсер, обработчик)

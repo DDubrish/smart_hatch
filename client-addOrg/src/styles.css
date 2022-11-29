@@ -5,17 +5,23 @@ form {
   border-radius: 1em;
 }
 
-table {
-  margin-top: 10px;
-  border-collapse: collapse;
-  border: 1px solid lightgrey;
-  width: 100%;
+.lbl {
+  display: inline-block;
+  width: 350px;
+  text-align: right;
 }
 
-th,
-td {
-  border: 1px solid lightgrey;
-  padding: 5px 5px;
+.dataOrg {
+  margin-top: 1em;
+}
+
+.input {
+  width: 354px;
+  box-sizing: border-box;
+}
+
+#btn-submit {
+  margin-left: 355px;
 }
 
 /* стили для меню навигации */

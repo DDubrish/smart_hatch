@@ -93,5 +93,4 @@ document.addEventListener("DOMContentLoaded", getMap, false);
 
 document.forms["hatchForm"].addEventListener("submit", () => {
   layerMarkers.clearMarkers();
-  alert("Люк добавлен!");
 });

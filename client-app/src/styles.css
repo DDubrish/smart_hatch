@@ -37,3 +37,28 @@ form {
 #btn-submit {
   margin-left: 355px;
 }
+
+/* стили для меню навигации */
+ul {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+a {
+  text-decoration: none;
+  display: inline-block;
+  padding: 10px;
+  background-color: lightgrey;
+  border: 1px dashed #333;
+  color: #333;
+}
+.active-page,
+a:hover {
+  background-color: #333;
+  color: #f4f4f4;
+}
+
+li {
+  display: inline;
+}

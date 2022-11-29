@@ -64,6 +64,7 @@ document.forms["hatchForm"].addEventListener("submit", (event) => {
 
   addHatch(hatch);
   event.target.reset();
+  alert("Люк добавлен!");
 });
 
 document.addEventListener("DOMContentLoaded", getOrg, false);
