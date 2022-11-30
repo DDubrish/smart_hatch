@@ -1,6 +1,6 @@
 const API_URL = "http://127.0.0.1:5501";
-const GREEN_IMG = "img/green.png";
-const RED_IMG = "img/red.png";
+const GREEN_IMG = "images/green.png";
+const RED_IMG = "images/red.png";
 const REFRESH_TIMEOUT_MS = 20000;
 
 let arrHatchState = [];

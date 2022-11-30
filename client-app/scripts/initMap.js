@@ -1,3 +1,5 @@
+const RED_IMG = "images/red.png";
+
 // var fromProjection = new OpenLayers.Projection("EPSG:4326");
 // var toProjection = new OpenLayers.Projection("EPSG:900913");
 var layerMarkers;
@@ -83,7 +85,7 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
     //данные маркера
     var size = new OpenLayers.Size(25, 25); //размер иконки маркера
     var offset = new OpenLayers.Pixel(-(size.w / 2), -(size.h / 2)); //смещение картинки для маркера
-    var icon = new OpenLayers.Icon("img/hatch.png", size, offset); //картинка для маркера
+    var icon = new OpenLayers.Icon(RED_IMG, size, offset); //картинка для маркера
     layerMarkers.clearMarkers();
     layerMarkers.addMarker(new OpenLayers.Marker(lonlat, icon));
   },

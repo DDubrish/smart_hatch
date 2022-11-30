@@ -1,9 +1,11 @@
+const API_URL = "http://127.0.0.1:5501";
+
 // Добавление пользователя
 //Создаем асинхронную функцию
 async function addHatch(hatch) {
   //асинхронная операция, приостанавливает выполнение функции,пока не вернется результат. fetch(параметры ресурса, куда функция обращается, доп.настройки запроса) -
   //возвращает объект Promise,который получает ответ после завершения запроса к сетевому ресурсу
-  const response = await fetch("http://127.0.0.1:5501/hatch", {
+  const response = await fetch(`${API_URL}/hatch`, {
     //метод запроса
     method: "POST",
     //набор заголовков ответа
@@ -26,7 +28,7 @@ async function addHatch(hatch) {
 }
 
 async function getOrg() {
-  const response = await fetch("http://127.0.0.1:5501/org", {
+  const response = await fetch(`${API_URL}/org`, {
     method: "GET",
     headers: { Accept: "application/json" },
   });

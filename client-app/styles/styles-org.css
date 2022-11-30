@@ -1,0 +1,25 @@
+form {
+  width: 710px;
+  padding: 1em;
+  border: 1px solid #ccc;
+  border-radius: 1em;
+}
+
+.lbl {
+  display: inline-block;
+  width: 350px;
+  text-align: right;
+}
+
+.dataOrg {
+  margin-top: 1em;
+}
+
+.input {
+  width: 354px;
+  box-sizing: border-box;
+}
+
+#btn-submit {
+  margin-left: 355px;
+}

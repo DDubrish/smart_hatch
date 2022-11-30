@@ -3,19 +3,18 @@
   <head>
     <meta charset="utf-8" />
     <title>Smart Hatch</title>
-    <link rel="stylesheet" href="./src/styles.css" />
+    <link rel="stylesheet" href="./styles/navbar.css" />
+    <link rel="stylesheet" href="styles/styles.css" />
     <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
   </head>
 
   <body>
     <nav class="menu">
       <ul>
-        <li><a href="../client-addOrg/index.html">Добавить организацию</a></li>
         <li><a href="index.html" class="active-page">Добавить люк</a></li>
+        <li><a href="addOrg.html">Добавить организацию</a></li>
         <li>
-          <a href="../client-changeData/index.html"
-            >Мониторинг состояния люков</a
-          >
+          <a href="monitoring.html">Мониторинг состояния люков</a>
         </li>
       </ul>
     </nav>
@@ -100,7 +99,7 @@
       </div>
     </form>
     <section id="OSMap" style="height: 650px"></section>
-    <script src="./src/initMap.js"></script>
-    <script src="./src/mainForm.js"></script>
+    <script src="scripts/initMap.js"></script>
+    <script src="scripts/mainForm.js"></script>
   </body>
 </html>
