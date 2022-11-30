@@ -26,7 +26,14 @@
     <form name="orgForm">
       <div class="dataOrg">
         <label class="lbl" for="number">Номер организации:</label>
-        <input class="input" type="number" id="number" name="id" required />
+        <input
+          class="input"
+          type="number"
+          id="number"
+          name="id"
+          min="0"
+          required
+        />
       </div>
       <div class="dataOrg">
         <label class="lbl" for="nameOrg">Наименование организации:</label>

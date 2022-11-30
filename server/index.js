@@ -112,7 +112,7 @@ app.post("/hatch", urlencodedParser, (request, response) => {
 });
 
 app.get("/hatches", (req, res) => {
-  const sql = "SELECT id, condition FROM luk";
+  const sql = `SELECT id, condition FROM luk`;
   console.log("Requesting state hatch");
   db.run(sql);
 
@@ -131,7 +131,7 @@ app.get("/hatches", (req, res) => {
 });
 
 app.get("/hatchesCurrentOrg", (req, res) => {
-  const sql = "SELECT id, condition FROM luk";
+  const sql = `SELECT id, condition FROM luk`;
   console.log("Requesting state hatch");
   db.run(sql);
 

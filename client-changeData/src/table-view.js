@@ -3,6 +3,9 @@ const GREEN_IMG = "img/green.png";
 const RED_IMG = "img/red.png";
 const REFRESH_TIMEOUT_MS = 20000;
 
+let arrHatchState = [];
+let selectedOrgId = null;
+
 async function getOrgsAsync() {
   const response = await fetch(`${API_URL}/org`, {
     method: "GET",
@@ -36,7 +39,7 @@ async function updateHatchStateAsync() {
     }
 
     hatches.forEach((hatch) => {
-      console.log(hatch.id, hatch.state);
+      // console.log(hatch.id, hatch.state);
 
       let row = document.createElement("tr");
       let cellId = document.createElement("td");
@@ -52,7 +55,54 @@ async function updateHatchStateAsync() {
       row.setAttribute("class", "hatchRow");
       hatchTable.appendChild(row);
     });
+
+    const hasPreviousData = arrHatchState.length > 0;
+    const updatedHatches = inspectHatches(hatches);
+    if (hasPreviousData) {
+      //если это не первый запуск, а обновление, то показываем alert
+      showAlert(updatedHatches);
+    }
+
+    console.log(arrHatchState);
   }
+}
+
+function inspectHatches(hatches) {
+  let updatedHatches = [];
+
+  hatches.forEach((hatch) => {
+    let existingHatch = arrHatchState.find((item) => item.id == hatch.id);
+    if (!existingHatch) {
+      //если такого люка еще нет, то добавляем
+      arrHatchState.push({ id: hatch.id, state: hatch.state });
+      updatedHatches.push({ id: hatch.id, state: hatch.state });
+    } else {
+      if (existingHatch.state === hatch.state) {
+      } else {
+        existingHatch.state = hatch.state;
+        updatedHatches.push({ id: hatch.id, state: hatch.state });
+      }
+    }
+  });
+
+  // console.log(updatedHatches);
+  return updatedHatches;
+}
+
+function showAlert(updatedHatches) {
+  if (!updatedHatches || updatedHatches.length == 0) {
+    //если битый ответ от сервера или пусто в таблице бд, или никакое состояние новое не пришло
+    return;
+  }
+
+  let alertMsg = "";
+  updatedHatches.forEach((hatch) => {
+    alertMsg += `Люк ${hatch.id} изменил состояние на ${
+      hatch.state === 1 ? "Исправен" : "Сдвинут"
+    }\n`;
+  });
+
+  alert(alertMsg);
 }
 
 async function initAsync() {

@@ -23,7 +23,14 @@
     <form name="hatchForm">
       <div class="dataHatch">
         <label class="lbl" for="number">Номер люка:</label>
-        <input class="input" type="number" id="number" name="id" required />
+        <input
+          class="input"
+          type="number"
+          id="number"
+          name="id"
+          min="0"
+          required
+        />
         <!--можно дописать required, чтобы форма не отправлялась если этих данных нет -->
       </div>
       <div class="dataHatch">
