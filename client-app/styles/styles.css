@@ -1,5 +1,5 @@
 form {
-  width: 710px;
+  width: 710px; /*можно указать в процентах для адаптивности размера*/
   padding: 1em;
   border: 1px solid #ccc;
   border-radius: 1em;
@@ -17,11 +17,11 @@ form {
 
 .input {
   width: 354px;
-  box-sizing: border-box;
+  box-sizing: border-box; /*ширина и высота элемента долны включать внутр.отступы и границы как часть своего значения*/
 }
 
 .coord {
-  display: inline-block;
+  display: inline-block; /*все элементы класса coord делаем блочно-строчными,чтобы они выстроились в одну строку*/
   margin-top: 0;
 }
 

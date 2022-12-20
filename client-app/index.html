@@ -4,17 +4,27 @@
     <meta charset="utf-8" />
     <title>Smart Hatch</title>
     <link rel="stylesheet" href="./styles/navbar.css" />
+    <!-- <script src="http://www.openlayers.org/api/OpenLayers.js"></script> -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v6.15.1/css/ol.css"
+      type="text/css"
+    />
     <link rel="stylesheet" href="styles/styles.css" />
-    <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v6.15.1/build/ol.js"></script>
   </head>
 
   <body>
     <nav class="menu">
       <ul>
-        <li><a href="index.html" class="active-page">Добавить люк</a></li>
-        <li><a href="addOrg.html">Добавить организацию</a></li>
         <li>
-          <a href="monitoring.html">Мониторинг состояния люков</a>
+          <a href="index.html" class="active-page nav-link">Добавить люк</a>
+        </li>
+        <li><a href="addOrg.html" class="nav-link">Добавить организацию</a></li>
+        <li>
+          <a href="monitoring.html" class="nav-link"
+            >Мониторинг состояния люков</a
+          >
         </li>
       </ul>
     </nav>
@@ -40,7 +50,7 @@
       </div>
       <div class="dataHatch">
         <div class="coord">
-          <label class="lbl" for="coords">Координаты:</label>
+          <label class="lbl">Координаты:</label>
         </div>
         <div class="coord">
           <input
@@ -67,6 +77,10 @@
         </div>
       </div>
       <div class="dataHatch">
+        <label class="lbl" for="landmark">Ориентир:</label>
+        <input class="input" type="text" id="landmark" name="landmark" />
+      </div>
+      <div class="dataHatch">
         <label class="lbl" for="state">Состояние датчика:</label>
         <input
           class="input"
@@ -75,7 +89,7 @@
           name="state"
           min="0"
           max="1"
-          value="0"
+          value="1"
           required
         />
       </div>
@@ -99,7 +113,10 @@
       </div>
     </form>
     <section id="OSMap" style="height: 650px"></section>
-    <script src="scripts/initMap.js"></script>
+
+    <script src="scripts/config.js"></script>
+    <script src="scripts/initMapBase.js"></script>
+    <script src="scripts/initMapNew.js"></script>
     <script src="scripts/mainForm.js"></script>
   </body>
 </html>

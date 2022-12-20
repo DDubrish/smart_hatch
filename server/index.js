@@ -9,15 +9,7 @@ app.use(
 );
 
 const sqlite3 = require("sqlite3");
-/*
-let fun = sum;
-console.log(fun(3, 4));
-
-fun = multy;
-console.log(fun(3, 4));
-
-function sum(x, y) { return x+y;}
-function multy(x, y) { return x*y;}*/
+const { Route } = require("express");
 
 //connecting database
 function getDb() {
@@ -99,12 +91,13 @@ app.post("/hatch", urlencodedParser, (request, response) => {
   const orgId = request.body.orgId;
   const coordX = request.body.coordX;
   const coordY = request.body.coordY;
+  const landmark = request.body.landmark;
   const state = request.body.state;
   const dateTo = request.body.dateTo;
   const dateLastWork = request.body.dateLastWork;
 
-  const sql = `INSERT INTO luk(id, org, koord_x, koord_y, date_to, condition, date_last_work) 
-    VALUES(${hatchId}, '${orgId}', '${coordX}', '${coordY}','${dateTo}','${state}', '${dateLastWork}');`;
+  const sql = `INSERT INTO luk(id, org, koord_x, koord_y, landmark,  date_to, condition, date_last_work) 
+    VALUES(${hatchId}, '${orgId}', '${coordX}', '${coordY}','${landmark}','${dateTo}','${state}', '${dateLastWork}');`;
   console.log(sql);
   db.run(sql);
 
@@ -112,7 +105,12 @@ app.post("/hatch", urlencodedParser, (request, response) => {
 });
 
 app.get("/hatches", (req, res) => {
-  const sql = `SELECT id, condition FROM luk`;
+  console.log("333 = " + req.query.orgId);
+  const searchQuery = req.query.orgId ? `WHERE org =${req.query.orgId}` : "";
+  console.log("id = " + searchQuery);
+  // const sql = `SELECT id, condition FROM luk`;
+  const sql = `SELECT id, condition, koord_x, koord_y, landmark FROM luk ${searchQuery}`;
+  console.log(sql);
   console.log("Requesting state hatch");
   db.run(sql);
 
@@ -122,7 +120,13 @@ app.get("/hatches", (req, res) => {
       throw err;
     }
     rows.forEach((row) => {
-      str.push({ id: row.id, state: row.condition });
+      str.push({
+        id: row.id,
+        state: row.condition,
+        coord_x: row.koord_x,
+        coord_y: row.koord_y,
+        landmark: row.landmark,
+      });
     });
 
     console.log(`Request finished`);

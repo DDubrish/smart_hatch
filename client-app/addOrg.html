@@ -11,14 +11,18 @@
     <nav class="menu">
       <ul>
         <li>
-          <a href="index.html">Добавить люк</a>
+          <a href="index.html" class="nav-link">Добавить люк</a>
         </li>
         <li>
-          <a href="addOrg.html" class="active-page">Добавить организацию</a>
+          <a href="addOrg.html" class="active-page nav-link"
+            >Добавить организацию</a
+          >
         </li>
 
         <li>
-          <a href="monitoring.html">Мониторинг состояния люков</a>
+          <a href="monitoring.html" class="nav-link"
+            >Мониторинг состояния люков</a
+          >
         </li>
       </ul>
     </nav>
@@ -36,7 +40,7 @@
         />
       </div>
       <div class="dataOrg">
-        <label class="lbl" for="nameOrg">Наименование организации:</label>
+        <label class="lbl" for="organization">Наименование организации:</label>
         <input
           class="input"
           type="text"
@@ -49,6 +53,7 @@
         <button id="btn-submit" type="submit">Отправить</button>
       </div>
     </form>
+    <script src="./scripts/config.js"></script>
     <script src="./scripts/addOrg.js"></script>
   </body>
 </html>

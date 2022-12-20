@@ -1,10 +1,5 @@
-const API_URL = "http://127.0.0.1:5501";
-const GREEN_IMG = "images/green.png";
-const RED_IMG = "images/red.png";
-const REFRESH_TIMEOUT_MS = 20000;
-
 let arrHatchState = [];
-let selectedOrgId = null;
+let selectedOrgId = "0";
 
 async function getOrgsAsync() {
   const response = await fetch(`${API_URL}/org`, {
@@ -25,7 +20,8 @@ async function getOrgsAsync() {
 }
 
 async function updateHatchStateAsync() {
-  const response = await fetch(`${API_URL}/hatches`, {
+  const queryString = selectedOrgId === "0" ? "" : `?orgId=${selectedOrgId}`;
+  const response = await fetch(`${API_URL}/hatches${queryString}`, {
     method: "GET",
     headers: { Accept: "application/json" },
   });
@@ -39,8 +35,6 @@ async function updateHatchStateAsync() {
     }
 
     hatches.forEach((hatch) => {
-      // console.log(hatch.id, hatch.state);
-
       let row = document.createElement("tr");
       let cellId = document.createElement("td");
       cellId.innerHTML = hatch.id;
@@ -50,17 +44,26 @@ async function updateHatchStateAsync() {
       img.setAttribute("src", hatch.state == "1" ? GREEN_IMG : RED_IMG);
       cellState.appendChild(img);
 
+      let cellAddress = document.createElement("td");
+      cellAddress.innerHTML = hatch.landmark;
+
       row.appendChild(cellId);
       row.appendChild(cellState);
+      row.appendChild(cellAddress);
       row.setAttribute("class", "hatchRow");
+      // row.setAttribute("id", "TR");
       hatchTable.appendChild(row);
     });
 
     const hasPreviousData = arrHatchState.length > 0;
     const updatedHatches = inspectHatches(hatches);
-    if (hasPreviousData) {
+    if (!hasPreviousData) {
+      addMarker(hatches);
+    } else if (showAlert(updatedHatches)) {
       //если это не первый запуск, а обновление, то показываем alert
-      showAlert(updatedHatches);
+      //showAlert(updatedHatches);
+      vectorSource.clear();
+      addMarker(hatches);
     }
 
     console.log(arrHatchState);
@@ -92,7 +95,7 @@ function inspectHatches(hatches) {
 function showAlert(updatedHatches) {
   if (!updatedHatches || updatedHatches.length == 0) {
     //если битый ответ от сервера или пусто в таблице бд, или никакое состояние новое не пришло
-    return;
+    return false;
   }
 
   let alertMsg = "";
@@ -103,19 +106,55 @@ function showAlert(updatedHatches) {
   });
 
   alert(alertMsg);
+
+  return true;
+}
+
+async function addRowHandlers() {
+  // console.log("$$$$");
+  // var table = document.getElementById("tableStateHatch");
+  // var rows = table.getElementsByTagName("tr");
+  // for (i = 1; i < rows.length; i++) {
+  //   row = table.rows[i];
+  //   console.log(row);
+  //   var createClickHandler = function (row) {
+  //     return function () {
+  //       console.log("0000000");
+  //     };
+  //   };
+  //   row.onclick = createClickHandler(row);
+  // }
+  var rows = document.getElementById("tableStateHatch").rows;
+  console.log(rows);
+  for (i = 0; i < rows.length; i++) {
+    console.log(rows.length);
+    rows[i].onclick = (function () {
+      return function () {
+        var id = this.cells[0].innerHTML;
+        alert("id:" + id);
+      };
+    })(rows[i]);
+  }
 }
 
 async function initAsync() {
   await getOrgsAsync();
   await updateHatchStateAsync();
+  // document.onload = addRowHandlers();
 }
 
 document.addEventListener("DOMContentLoaded", initAsync, false);
+// document.addEventListener("onload", addRowHandlers, false);
 
 setInterval(updateHatchStateAsync, REFRESH_TIMEOUT_MS);
 
 document.getElementById("organization").addEventListener("change", function () {
   var select = document.getElementById("organization");
   var idOrg = select.options[select.selectedIndex].value;
-  console.log(idOrg);
+  selectedOrgId = idOrg;
+  updateHatchStateAsync();
 });
+
+// document.onload = addRowHandlers();
+
+// document.addEventListener("DOMContentLoaded", addRowHandlers);

@@ -1,5 +1,3 @@
-const API_URL = "http://127.0.0.1:5501";
-
 // Добавление пользователя
 //Создаем асинхронную функцию
 async function addHatch(hatch) {
@@ -20,6 +18,7 @@ async function addHatch(hatch) {
       orgId: hatch.orgId,
       coordX: hatch.coordX,
       coordY: hatch.coordY,
+      landmark: hatch.landmark,
       state: hatch.state,
       dateTo: hatch.dateTo,
       dateLastWork: hatch.dateLastWork,
@@ -60,12 +59,14 @@ document.forms["hatchForm"].addEventListener("submit", (event) => {
 
   hatch.coordX = form.elements["coordX"].value;
   hatch.coordY = form.elements["coordY"].value;
+  hatch.landmark = form.elements["landmark"].value;
   hatch.state = form.elements["state"].value;
   hatch.dateTo = form.elements["dateTo"].value;
   hatch.dateLastWork = form.elements["dateLastWork"].value;
 
   addHatch(hatch);
   event.target.reset();
+  vectorSource.clear();
   alert("Люк добавлен!");
 });
 

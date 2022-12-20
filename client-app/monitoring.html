@@ -3,16 +3,22 @@
   <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="./styles/navbar.css" />
-    <link rel="stylesheet" href="./styles/styles-tv.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v6.15.1/css/ol.css"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="styles/styles-tv.css" />
+    <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v6.15.1/build/ol.js"></script>
     <title>Monitoring Hatch</title>
   </head>
   <body>
     <nav class="menu">
       <ul>
-        <li><a href="index.html">Добавить люк</a></li>
-        <li><a href="addOrg.html">Добавить организацию</a></li>
+        <li><a href="index.html" class="nav-link">Добавить люк</a></li>
+        <li><a href="addOrg.html" class="nav-link">Добавить организацию</a></li>
         <li>
-          <a href="monitoring.html" class="active-page"
+          <a href="monitoring.html" class="active-page nav-link"
             >Мониторинг состояния люков</a
           >
         </li>
@@ -23,16 +29,25 @@
       <div class="org">
         <label for="nameOrg">Наименование организации:</label>
         <select id="organization" name="organization">
-          <option disabled selected>Выберите организацию:</option>
+          <option selected value="0">Все организации:</option>
         </select>
       </div>
       <table id="tableStateHatch">
         <tr>
           <th>Номер люка:</th>
           <th>Состояние:</th>
+          <th>Адрес:</th>
         </tr>
       </table>
     </form>
+    <section id="OSMap" style="height: 650px"></section>
+    <div id="popup" class="ol-popup">
+      <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+      <div id="popup-content"></div>
+    </div>
+    <script src="./scripts/config.js"></script>
+    <script src="./scripts/initMapBase.js"></script>
+    <script src="./scripts/initMapMonitoring.js"></script>
     <script src="./scripts/table-view.js"></script>
   </body>
 </html>
