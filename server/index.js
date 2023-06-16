@@ -11,7 +11,7 @@ app.use(
 const sqlite3 = require("sqlite3");
 const { Route } = require("express");
 
-//connecting database
+//Соединение с БД
 function getDb() {
   let db = new sqlite3.Database("luk.db", (err) => {
     if (err) {

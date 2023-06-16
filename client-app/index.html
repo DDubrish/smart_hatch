@@ -1,8 +1,21 @@
+<!-- Тэг span нужен для выделения куска текста, 
+  чтобы например выделить его другим цветом -->
+
+<!-- Если один и тот же класс написан у разных тэгов а обрптиться надо к одному,
+  то записываем название тэга.название класса, например - span.bigred -->
+
 <!DOCTYPE html>
 <html lang="ru">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Smart Hatch</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
+    />
+    <link rel="stylesheet" href="./styles/clear.css" />
+    <link rel="stylesheet" href="./styles/base.css" />
     <link rel="stylesheet" href="./styles/navbar.css" />
     <!-- <script src="http://www.openlayers.org/api/OpenLayers.js"></script> -->
     <link
@@ -15,104 +28,141 @@
   </head>
 
   <body>
-    <nav class="menu">
-      <ul>
-        <li>
-          <a href="index.html" class="active-page nav-link">Добавить люк</a>
-        </li>
-        <li><a href="addOrg.html" class="nav-link">Добавить организацию</a></li>
-        <li>
-          <a href="monitoring.html" class="nav-link"
-            >Мониторинг состояния люков</a
-          >
-        </li>
-      </ul>
-    </nav>
-    <h2>Ввод данных о новом люке:</h2>
-    <form name="hatchForm">
-      <div class="dataHatch">
-        <label class="lbl" for="number">Номер люка:</label>
-        <input
-          class="input"
-          type="number"
-          id="number"
-          name="id"
-          min="0"
-          required
-        />
-        <!--можно дописать required, чтобы форма не отправлялась если этих данных нет -->
-      </div>
-      <div class="dataHatch">
-        <label class="lbl" for="nameOrg">Наименование организации:</label>
-        <select class="input" id="organization" name="organization" required>
-          <option disabled selected>Выберите организацию:</option>
-        </select>
-      </div>
-      <div class="dataHatch">
-        <div class="coord">
-          <label class="lbl">Координаты:</label>
+    <div class="main_page">
+      <nav class="sidebar">
+        <div class="logo">
+          <!-- <img src="images/luk.jpg" alt="Иконка люка" /> -->
+          <div class="img"></div>
+          <div class="logo_name">Умный люк</div>
         </div>
-        <div class="coord">
-          <input
-            readonly
-            type="text"
-            id="coordX"
-            name="coordX"
-            placeholder="X"
-            required
-          />
+        <ul class="nav-list">
+          <li>
+            <a href="monitoring.html">
+              <i class="bx bx-desktop"></i>
+              <span class="links_name">Мониторинг</span>
+            </a>
+          </li>
+          <!-- <li>
+            <a href="#">
+              <i class="bx bx-user"></i>
+              <span class="links_name">Пользователи</span>
+            </a>
+          </li> -->
+          <li>
+            <a href="addOrg.html">
+              <i class="bx bx-home"></i>
+              <span class="links_name">Организации</span>
+            </a>
+          </li>
+          <li>
+            <a href="index.html" class="active-page">
+              <i class="bx bx-circle"></i>
+              <span class="links_name">Люки</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="main_content">
+        <div class="main_content_row1">
+          <form name="hatchForm">
+            <h2>Ввод данных о новом люке:</h2>
+            <div class="main-info">
+              <div class="dataHatch">
+                <label class="lbl" for="number">Номер люка</label>
+                <input
+                  class="input"
+                  type="number"
+                  id="number"
+                  name="id"
+                  min="0"
+                  required
+                />
+                <!--можно дописать required, чтобы форма не отправлялась если этих данных нет -->
+              </div>
+              <div class="dataHatch">
+                <label class="lbl" for="nameOrg"
+                  >Наименование организации</label
+                >
+                <select
+                  class="input"
+                  id="organization"
+                  name="organization"
+                  required
+                >
+                  <option disabled selected>Выберите организацию</option>
+                </select>
+              </div>
+              <div class="dataHatch">
+                <label class="lbl">Координаты</label>
+
+                <div class="coord">
+                  <input
+                    readonly
+                    type="text"
+                    id="coordX"
+                    name="coordX"
+                    placeholder="X"
+                    required
+                  />
+                  <input
+                    readonly
+                    type="text"
+                    id="coordY"
+                    name="coordY"
+                    placeholder="Y"
+                    required
+                  />
+
+                  <button class="map" type="button" id="mapBtn">Карта</button>
+                </div>
+              </div>
+              <div class="dataHatch">
+                <label class="lbl" for="landmark">Ориентир</label>
+                <input
+                  class="input"
+                  type="text"
+                  id="landmark"
+                  name="landmark"
+                />
+              </div>
+              <div class="dataHatch">
+                <label class="lbl" for="state">Состояние датчика</label>
+                <input
+                  class="input"
+                  type="number"
+                  id="state"
+                  name="state"
+                  min="0"
+                  max="1"
+                  value="1"
+                  required
+                />
+              </div>
+              <div class="dataHatch">
+                <label class="lbl" for="dateTo">Дата последнего ТО</label>
+                <input class="input" type="date" id="dateTo" name="dateTo" />
+              </div>
+              <div class="dataHatch">
+                <label class="lbl" for="dateLastWork"
+                  >Дата последнего срабатывания датчика</label
+                >
+                <input
+                  class="input"
+                  type="date"
+                  id="dateLastWork"
+                  name="dateLastWork"
+                />
+              </div>
+              <div class="buttons dataHatch">
+                <button id="btn-submit" type="submit">Отправить</button>
+              </div>
+            </div>
+          </form>
+          <div id="OSMap" class="form-map"></div>
         </div>
-        <div class="coord">
-          <input
-            readonly
-            type="text"
-            id="coordY"
-            name="coordY"
-            placeholder="Y"
-            required
-          />
-        </div>
-        <div class="coord">
-          <button class="map" type="button" id="mapBtn">Карта</button>
-        </div>
       </div>
-      <div class="dataHatch">
-        <label class="lbl" for="landmark">Ориентир:</label>
-        <input class="input" type="text" id="landmark" name="landmark" />
-      </div>
-      <div class="dataHatch">
-        <label class="lbl" for="state">Состояние датчика:</label>
-        <input
-          class="input"
-          type="number"
-          id="state"
-          name="state"
-          min="0"
-          max="1"
-          value="1"
-          required
-        />
-      </div>
-      <div class="dataHatch">
-        <label class="lbl" for="dateTo">Дата последнего ТО:</label>
-        <input class="input" type="date" id="dateTo" name="dateTo" />
-      </div>
-      <div class="dataHatch">
-        <label class="lbl" for="dateLastWork"
-          >Дата последнего срабатывания датчика:</label
-        >
-        <input
-          class="input"
-          type="date"
-          id="dateLastWork"
-          name="dateLastWork"
-        />
-      </div>
-      <div class="buttons dataHatch">
-        <button id="btn-submit" type="submit">Отправить</button>
-      </div>
-    </form>
-    <section id="OSMap" style="height: 650px"></section>
+    </div>
 
     <script src="scripts/config.js"></script>
     <script src="scripts/initMapBase.js"></script>

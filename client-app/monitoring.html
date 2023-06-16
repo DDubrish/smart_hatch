@@ -2,6 +2,8 @@
 <html lang="ru">
   <head>
     <meta charset="utf-8" />
+    <link rel="stylesheet" href="./styles/clear.css" />
+    <link rel="stylesheet" href="./styles/base.css" />
     <link rel="stylesheet" href="./styles/navbar.css" />
     <link
       rel="stylesheet"
@@ -11,9 +13,13 @@
     <link rel="stylesheet" href="styles/styles-tv.css" />
     <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v6.15.1/build/ol.js"></script>
     <title>Monitoring Hatch</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
+    />
   </head>
   <body>
-    <nav class="menu">
+    <!-- <nav class="menu">
       <ul>
         <li><a href="index.html" class="nav-link">Добавить люк</a></li>
         <li><a href="addOrg.html" class="nav-link">Добавить организацию</a></li>
@@ -23,31 +29,75 @@
           >
         </li>
       </ul>
-    </nav>
-    <h2>Мониторинг состояния люков:</h2>
-    <form name="monitoringForm">
-      <div class="org">
-        <label for="nameOrg">Наименование организации:</label>
-        <select id="organization" name="organization">
-          <option selected value="0">Все организации:</option>
-        </select>
+    </nav> -->
+    <div class="main_page">
+      <div class="sidebar">
+        <div class="logo_name">Умный люк</div>
+        <ul class="nav-list">
+          <li>
+            <a href="monitoring.html" class="active-page">
+              <i class="bx bx-desktop"></i>
+              <span class="links_name">Мониторинг</span>
+            </a>
+          </li>
+          <!-- <li>
+            <a href="#">
+              <i class="bx bx-user"></i>
+              <span class="links_name">Пользователи</span>
+            </a>
+          </li> -->
+          <li>
+            <a href="addOrg.html">
+              <i class="bx bx-home"></i>
+              <span class="links_name">Организации</span>
+            </a>
+          </li>
+          <li>
+            <a href="index.html">
+              <i class="bx bx-circle"></i>
+              <span class="links_name">Люки</span>
+            </a>
+          </li>
+        </ul>
       </div>
-      <table id="tableStateHatch">
-        <tr>
-          <th>Номер люка:</th>
-          <th>Состояние:</th>
-          <th>Адрес:</th>
-        </tr>
-      </table>
-    </form>
-    <section id="OSMap" style="height: 650px"></section>
-    <div id="popup" class="ol-popup">
-      <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-      <div id="popup-content"></div>
+
+      <div class="main_content">
+        <div class="main_content_row1">
+          <form name="monitoringForm">
+            <h2>Мониторинг состояния люков:</h2>
+            <div class="org">
+              <!-- <label for="nameOrg">Наименование организации:</label> -->
+              <select id="organization" name="organization">
+                <option selected value="0">Все организации</option>
+              </select>
+            </div>
+            <table id="tableStateHatch">
+              <tr>
+                <th>Номер люка:</th>
+                <th>Состояние:</th>
+                <th>Адрес:</th>
+              </tr>
+            </table>
+          </form>
+          <div id="OSMap"></div>
+          <div id="popup" class="ol-popup">
+            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+            <div id="popup-content"></div>
+
+            
+          </div>
+      </div>
+      <div class="main_content_row2">
+        <ul id="pagination"></ul>
+        <table id="table"></table> 
+          </div>
+        </div>
+      </div>
     </div>
     <script src="./scripts/config.js"></script>
     <script src="./scripts/initMapBase.js"></script>
     <script src="./scripts/initMapMonitoring.js"></script>
     <script src="./scripts/table-view.js"></script>
+    <script src="./scripts/pagination.js"></script>
   </body>
 </html>

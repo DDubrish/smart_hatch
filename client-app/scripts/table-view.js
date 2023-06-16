@@ -1,6 +1,7 @@
 let arrHatchState = [];
 let selectedOrgId = "0";
 
+//Запрос из клиента на получение списка организаций, которые зарегистрированы в БД
 async function getOrgsAsync() {
   const response = await fetch(`${API_URL}/org`, {
     method: "GET",
@@ -19,6 +20,7 @@ async function getOrgsAsync() {
   }
 }
 
+//Запрос из клиента на обновление данных по люкам
 async function updateHatchStateAsync() {
   const queryString = selectedOrgId === "0" ? "" : `?orgId=${selectedOrgId}`;
   const response = await fetch(`${API_URL}/hatches${queryString}`, {
@@ -70,6 +72,7 @@ async function updateHatchStateAsync() {
   }
 }
 
+//Проверка данных по люкам
 function inspectHatches(hatches) {
   let updatedHatches = [];
 
@@ -92,6 +95,7 @@ function inspectHatches(hatches) {
   return updatedHatches;
 }
 
+//если данные обновились то показывать всплывающее окно
 function showAlert(updatedHatches) {
   if (!updatedHatches || updatedHatches.length == 0) {
     //если битый ответ от сервера или пусто в таблице бд, или никакое состояние новое не пришло

@@ -1,23 +1,36 @@
-form {
-  width: 710px;
-  padding: 1em;
-  border: 1px solid #ccc;
+.main_content_row1 {
+  display: flex;
+  margin: 0 0 5px 0;
+}
+
+.main_content_row2 {
+  flex: 1;
+  border: 1px solid rgb(156, 154, 154);
   border-radius: 1em;
+  margin: 5px;
+  background-color: rgb(235, 235, 235);
 }
 
-table {
-  margin-top: 10px;
-  border-collapse: collapse;
-  border: 1px solid lightgrey;
+/* CSS для формы ввода */
+form {
+  display: inline-block;
+  max-width: 600px;
+  min-height: 455px;
+  padding: 15px;
+  border: 1px solid rgb(156, 154, 154);
+  background-color: rgb(235, 235, 235);
+  border-radius: 1em;
+  margin: 5px 5px auto;
+  overflow: auto;
+}
+
+.org select {
+  display: block;
   width: 100%;
+  height: 40px;
 }
 
-th,
-td {
-  border: 1px solid lightgrey;
-  padding: 5px 5px;
-}
-
+/*Стили для всплывающего окна после клика на люк*/
 .ol-popup {
   position: absolute;
   background-color: white;
@@ -59,4 +72,75 @@ td {
 }
 .ol-popup-closer:after {
   content: "✖";
+}
+
+/* CSS карты */
+
+#OSMap {
+  flex: 1;
+  min-width: 200px;
+  min-height: 455px;
+  height: 455px;
+  margin: 5px 5px auto;
+}
+
+/* Pagination*/
+
+/* .pagination {
+  display: inline-block;
+  float: right;
+}
+
+.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+}
+
+.pagination a:hover:not(.active) {
+  background-color: grey;
+  color: white;
+}
+
+a:nth-child(5) {
+  background-color: green;
+  color: white;
+}
+
+a:nth-child(1) {
+  font-weight: bold;
+}
+
+a:nth-child(8) {
+  font-weight: bold;
+} */
+
+#table td {
+  padding: 10px;
+  /* border: 1px solid grey; */
+}
+
+#pagination {
+  /* display: flex;
+  padding: 0; */
+  float: right;
+}
+
+#pagination li {
+  display: inline-block;
+  margin: 5px;
+  padding: 10px;
+  border: 1px solid grey;
+  border-radius: 5px;
+}
+
+#pagination li:hover,
+#pagination li.active {
+  cursor: pointer;
+  color: red;
+  border: 1px solid red;
+}
+
+#pagination li.active {
+  padding: 9px;
 }

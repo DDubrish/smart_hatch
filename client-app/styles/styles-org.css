@@ -1,14 +1,17 @@
+/* CSS для формы ввода */
 form {
-  width: 710px;
+  display: inline-block;
+  max-width: 500px;
   padding: 1em;
-  border: 1px solid #ccc;
+  border: 1px solid rgb(156, 154, 154);
+  background-color: rgb(235, 235, 235);
   border-radius: 1em;
+  margin: 10px 5px auto;
 }
 
 .lbl {
-  display: inline-block;
-  width: 350px;
-  text-align: right;
+  display: block;
+  font-size: 14px;
 }
 
 .dataOrg {
@@ -16,10 +19,14 @@ form {
 }
 
 .input {
-  width: 354px;
-  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  height: 40px;
+  color: #474849;
 }
 
 #btn-submit {
-  margin-left: 355px;
+  display: block;
+  height: 40px;
+  margin: 0 auto;
 }

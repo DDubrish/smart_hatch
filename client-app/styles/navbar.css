@@ -1,27 +1,66 @@
-/* стили для меню навигации */
-ul {
-  list-style: none;
-  margin-left: 0;
-  padding-left: 0;
+/* СSS для боковой панели */
+
+.logo_name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #14295b;
+  color: white;
+  font-size: 26px;
+  font-weight: 600;
+  height: 70px;
 }
 
-.nav-link {
-  text-decoration: none;
-  display: inline-block;
-  padding: 10px;
-  margin-top: 5px;
-  background-color: lightgrey; /*цвет фона */
-  border: 1px dashed #333; /*цвет границы */
-  color: #333; /*цвет шрифта */
-  width: 280px;
-}
-.active-page,
-.nav-link:hover {
-  background-color: #333;
-  color: #f4f4f4;
+.sidebar i {
+  color: #14295b;
+  height: 60px;
+  min-width: 50px;
+  font-size: 28px;
+  text-align: center;
+  line-height: 60px;
 }
 
-/* по умолчанию li блочный элемент, делаем его строчным */
-li {
-  display: inline;
+.sidebar li {
+  margin: 8px 0;
+}
+
+.sidebar li a {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  border-radius: 12px;
+  align-items: center;
+  transition: all 0.4s ease;
+  background: #95b3d7;
+}
+
+.sidebar li a .links_name {
+  color: #14295b;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.sidebar li a:hover .links_name,
+.sidebar li a:hover i {
+  transition: all 0.5s ease;
+  color: #fff;
+}
+
+/* .sidebar .nav-list {
+  margin-top: 20px;
+  height: 100%;
+} */
+
+.sidebar li .active-page .links_name,
+.sidebar li .active-page i {
+  transition: all 0.5s ease;
+  color: #fff;
+}
+
+.sidebar li .active-page .links_name {
+  font-size: 14px;
+}
+
+.active-page {
+  border: solid 1px #fff;
 }
